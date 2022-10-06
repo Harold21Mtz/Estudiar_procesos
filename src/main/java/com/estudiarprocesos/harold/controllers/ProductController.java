@@ -43,16 +43,16 @@ public class ProductController {
         return new ResponseEntity(products, HttpStatus.OK);
     }
 
-    @GetMapping(value= "/product/{nombre}/{categoria}")
+    @GetMapping(value= "/product/{nombre}/{precio}")
     public ResponseEntity ListbyNameandCategory(@PathVariable String nombre,
-                                                @PathVariable String categoria){
-        List<Product> products= productRepository.findByNombreAndCategoria(nombre,categoria);
+                                                @PathVariable double precio){
+        List<Product> products= productRepository.findByNombreAndPrecio(nombre,precio);
         if(products.isEmpty()){
             return ResponseEntity.notFound().build();
         }
         return new ResponseEntity(products, HttpStatus.OK);
     }
-/*
+
     @GetMapping(value= "/product/precio/{precio}")
     public ResponseEntity ListbyPrice(@PathVariable double precio){
         List<Product> products= productRepository.findAllByPrecio(precio);
@@ -61,7 +61,7 @@ public class ProductController {
         }
         return new ResponseEntity(products, HttpStatus.OK);
     }
-*/
+
     @PostMapping(value= "/product")
     public ResponseEntity createProduct(@RequestBody Product product){
         try{
@@ -73,7 +73,7 @@ public class ProductController {
 
     }
 
-    @PutMapping(value="/product")
+    @PutMapping(value="/product/{id}")
     public ResponseEntity updateProduct(@PathVariable Long id,@RequestBody Product product){
         Optional<Product> productBD = productRepository.findById(id);
         if(productBD.isPresent()){
